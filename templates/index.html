@@ -1,0 +1,117 @@
+{% extends "templates.html" %}
+{% load chunks %}
+
+{% block json %}
+    var view_model = {{ view_model|safe }};
+{% endblock %}
+
+{% block toolbar %}
+    <div id="announcements"><span></span> {% chunk "announcement" %}</div>
+    <div class="left section">
+        <div class="toolbar">
+            <div data-bind='jqueryui: "buttonset"'>
+                <button id="run_button" data-bind='jqueryui: { widget: "button", options: {
+                icons: {
+                    primary: "ui-icon-play"
+                },
+                disabled: busy()
+                } }, click: function() { engine.execute() }'>
+                    Run
+                </button>
+                <button data-bind='jqueryui: { widget: "button", options: {
+                icons: {
+                    primary: "ui-icon-arrowrefresh-1-e"
+                },
+                disabled: busy()
+            } }, click: function() { engine.reset() }'>
+                    Reset
+                </button>
+            </div>
+            <div class="container" data-bind='jqueryui: "buttonset"'>
+                <button data-bind='jqueryui: { widget: "button", options: {
+                icons: {
+                    primary: "ui-icon-triangle-1-s"
+                }
+            } }, click: function() { $("#shareMenu").toggle("blind") }'>
+                    Share
+                </button>
+                <button data-bind='jqueryui: { widget: "button", options: {
+                icons: {
+                    primary: "ui-icon-folder-open"
+                },
+                disabled: !newFiddle()
+            } }, click: function() { $("#importDialog").dialog("open") }'>
+                    Import
+                </button>
+
+                <div id="shareMenu" class="ui-widget-content ui-corner-all">
+                    <span id="share_this"></span>
+                    <div class="marginTop" style="display:block"></div>
+                    <div>
+                        <span>Link</span>
+                        <span id="copyButton" class="right ui-icon ui-icon-clipboard"></span>
+                    </div>
+                    <input data-bind="value: snippetUrl" />
+                    <span>Embed</span>
+                    <input data-bind="value: embedUrl, disable: newFiddle"/>
+                </div>
+
+            </div>
+            <button data-bind='jqueryui: { widget: "button", options: {
+            icons: {
+                primary: authenticated() ? "ui-icon-unlocked" : "ui-icon-locked"
+            },
+            label: authenticated() ? "Dashboard" : "Login"
+        } }, click: function() { authenticated() ? window.open("/dashboard/") : popup("/login/") }'>
+            </button>
+        </div>
+
+        <h2 class="title" data-bind="text:title"></h2>
+    </div>
+
+    <div id="logo" class="right section">
+        {% if not embedded %}
+            <img alt="Python Cloud" src="{% media_url '/images/Python_Fiddler.png' %}"/>
+            <h1>Python Fiddle</h1>
+            <h3>Python Cloud IDE</h3>
+        {% endif %}
+        <div id="plusone"><g:plusone ></g:plusone></div>
+    </div>
+{% endblock %}
+
+{% block center_panel %}
+{% endblock %}
+
+{% block details_panel %}
+    <div class="details" data-bind='template: { name: "formTemplate" }'></div>
+    <!-- ko template: "revisionsTemplate" -->
+    <!-- /ko -->
+{% endblock %}
+
+{% block accordion_panel %}
+    <div id="accordion" data-bind="template: { name: accordionTemplate }"></div>
+    <div class="marginTop" id="accordion-bottom"><a href="http://twitter.com/python_fiddle" class="twitter-follow-button" data-show-count="false">Follow @python_fiddle</a></div>
+{% endblock %}
+
+{% block dialogs %}
+
+    <div id="importDialog" class="container" title="Import from external resources" data-bind='jqueryui: { widget: "dialog", options: {
+        minWidth: 500,
+        autoOpen: false
+    } }'>
+        <label for="importurl">url:</label>
+        <input id="importurl" data-bind="value: importUrl" class="text ui-widget-content ui-corner-all" />
+        <button data-bind='jqueryui: { widget: "button", options: {
+        icons: {
+            primary: "ui-icon-triangle-1-e"
+        }
+    } }, click: function() { viewModel.importExternal() }'>
+            Go
+        </button>
+        <div class="bottom" data-bind='jqueryui: "buttonset"'>
+            <input type="radio" name="importOption" id="pythonsnippet" value="pythonsnippet" checked="checked" data-bind="checked: importOption" /><label for="pythonsnippet">Python Snippet</label>
+            <input type="radio" name="importOption" id="stackoverflow" value="stackoverflow" data-bind="checked: importOption" /><label for="stackoverflow">Stackoverflow Question</label>
+        </div>
+    </div>
+
+{% endblock %}

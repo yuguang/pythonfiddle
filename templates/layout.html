@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}{% if snippet.title %}{{ snippet.title }}{% else %}{{ default_meta.title }}{% endif %} | Python Fiddle{% endblock %}
+{% block description %}{% if snippet.description %}{{ snippet.description }}{% else %}{{ default_meta.description }}{% endif %}{% endblock %}
+{% block keywords %}{% if snippet.get_tagstring %}{{ snippet.get_tagstring }}{% else %}{{ default_meta.keywords }}{% endif %}{% endblock %}
+
+{% block body_tag %}class='ui-widget'{% endblock %}
+
+
+{% block content %}
+
+<div class="ui-layout-center">
+	<textarea id='editor' autofocus='autofocus'>{{ snippet.code }}</textarea>
+    {% block center_panel %}{% endblock %}
+</div>
+<div class="ui-layout-north clearfix">{% block toolbar %}{% endblock %}</div>
+<div class="ui-layout-south">
+	<div id="console" data-bind="html: consoleOutput"></div>
+</div>
+<div class="ui-layout-east">
+	{% block details_panel %}{% endblock %}
+</div>
+<div class="ui-layout-west">
+	{% block accordion_panel %}{% endblock %}
+</div>
+{% block dialogs %}{% endblock %}
+{% block tmpl %}{% endblock %}
+{% endblock %}
+
+
+{% block resources %}
+    {% css "css/styles.python.css" %}
+    <script type="text/javascript">
+        var base_url="{% media_url %}";
+        var ajax_url="{% if DEBUG %}http://localhost/static{% else %}http://pythonfiddle.com/home{% endif %}";
+        var lib_url="http://pythonfiddle.com/lib/python2.7";
+        var debug = {% if DEBUG %}true{% else %}false{% endif %};
+        var embedded = {% if embedded %}true{% else %}false{% endif %};
+        var _v = '?v=' + '{{ MEDIA_VERSION }}';
+        {% if ownerId %}var ownerId = {{ ownerId }}{% endif %};
+        {% block json %}{% endblock %}
+        {% if not DEBUG %}
+        (function(g,b,d){var c=b.head||b.getElementsByTagName("head"),D="readyState",E="onreadystatechange",F="DOMContentLoaded",G="addEventListener",H=setTimeout;
+        function f(){
+            $LAB
+            .script(base_url+"/js/python.bootstrap.js.gz"+_v)
+            .script("http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js").wait()
+            .script(base_url+"/js/jquery-ui.python.js.gz"+_v)
+            .script(base_url+"/js/knockout.js.gz"+_v).wait()
+            .script(base_url+"/js/codemirror.python.js.gz"+_v)
+            .script(function() {
+                        var ver = -1; // Return value assumes failure.
+                        if (navigator.appName == "Microsoft Internet Explorer") {
+                            var ua = navigator.userAgent;
+                            var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+                            if (re.exec(ua) != null)
+                                ver = parseFloat(RegExp.$1);
+                            if (ver < 10) {
+                                return base_url+"/js/ie-worker.js";
+                            }
+                        }
+                        return null;
+                    })
+            .script(base_url+"/js/python.editor.js.gz"+_v).wait()
+            .script(base_url+"/js/python.init.js.gz"+_v)
+            .script("http://www.google-analytics.com/ga.js")
+            .script("https://apis.google.com/js/plusone.js")
+            .script("http://platform.twitter.com/widgets.js")
+            .script("http://w.sharethis.com/button/buttons.js").wait(function(){
+                stLight.options({publisher:"e166464f-d4f0-487b-b673-7abd0a910c5f"});
+                stWidget.addEntry(defaultShare);
+            });
+        }
+        H(function(){if("item"in c){if(!c[0]){H(arguments.callee,25);return}c=c[0]}var a=b.createElement("script"),e=false;a.onload=a[E]=function(){if((a[D]&&a[D]!=="complete"&&a[D]!=="loaded")||e){return false}a.onload=a[E]=null;e=true;f()};
+
+        a.src=base_url+"/js/LAB.min.js";
+
+        c.insertBefore(a,c.firstChild)},0);if(b[D]==null&&b[G]){b[D]="loading";b[G](F,d=function(){b.removeEventListener(F,d,false);b[D]="complete"},false)}})(this,document);
+        {% endif %}
+    </script>
+    {% if not DEBUG %}<link href='http://fonts.googleapis.com/css?family=Baumans' rel='stylesheet' type='text/css'>{% endif %}
+    {% if DEBUG %}
+        {% js "js/LAB.min.js" %}
+    	{% js "js/ie-worker.js" %}
+        {% js "js/python.bootstrap.js" %}
+        {% js "js/jquery-1.6.2.js" %}
+        {% js "js/jquery-ui.python.js" %}
+        {% js "js/knockout.js" %}
+        {% js "js/codemirror.python.js" %}
+        {% js "js/python.editor.js" %}
+        {% js "js/python.init.js" %}
+    {% endif %}
+{% endblock %}

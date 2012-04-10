@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block tmpl %}
+{% load jqtmpl %}
+{% load chunks %}
+
+{% include "fiddle/templates.html"%}
+{% jqtmpl %}
+
+<script id="exampleTemplate" type="text/html">
+    <a href="#" data-bind="click: $parent.selectExample, text: title"></a>
+</script>
+
+<script id="packageTemplate" type="text/html">
+    <li class="clickable" data-bind="text:name, attr: { title: description }, click: function() { window.open($data.link) }"></li>
+</script>
+
+<script id="pythonAccordion" type="text/html">
+    <h3><a href="#">Examples</a></h3>
+    <div>
+        <div data-bind="template: { name: 'exampleTemplate', foreach: examples }"></div>
+    </div>
+    <h3><a href="#">Packages</a></h3>
+    <div id="packages">
+        <ul data-bind="template: { name: 'packageTemplate', foreach: packages }"></ul>
+    </div>
+    <h3><a href="#">Hotkeys</a></h3>
+    <div class="hotkeys">
+        <span class="kbd">Ctrl</span>+<span class="kbd">&crarr;</span><span>run</span>
+        <span class="kbd">Ctrl</span>+<span class="kbd">R</span><span>reset</span>
+        <span class="kbd">Ctrl</span>+<span class="kbd">O</span><span>import</span>
+        <span class="kbd">Ctrl</span>+<span class="kbd">Space</span><span>complete</span>
+        <span class="kbd">Ctrl</span>+<span class="kbd">F</span><span>find</span>
+        <span class="kbd">Ctrl</span>+<span class="kbd">G</span><span>findNext</span>
+        <span class="kbd">Shift</span>+<span class="kbd">Ctrl</span>+<span class="kbd">G</span><span>findPrev</span>
+        <span class="kbd">Shift</span>+<span class="kbd">Ctrl</span>+<span class="kbd">F</span><span>replace</span>
+        <span class="kbd">Shift</span>+<span class="kbd">Ctrl</span>+<span class="kbd">R</span><span>replaceAll</span>
+
+    </div>
+    <h3><a href="#">Featured</a></h3>
+    <div>
+        {% endjqtmpl %}
+            {% chunk "featured_fiddles" %}
+        {% jqtmpl %}
+    </div>
+    <h3><a href="#">Pages</a></h3>
+    <div>
+        {% endjqtmpl %}
+            {% load flatpages %}
+            {% get_flatpages as flatpages %}
+            {% for page in flatpages %}
+                <p><a class="link" href="{{ page.url }}">{{ page.title }}</a></p>
+            {% endfor %}
+            <p><a class="link" href="{% url fiddle_snippet_list %}">All Fiddles</a></p>
+        {% jqtmpl %}
+        <p><a class="link" href="http://python.net/~goodger/projects/pycon/2007/idiomatic/handout.html">Python Idioms</a></p>
+        <p><a class="link" href="http://docs.python.org/tutorial/">The Python Tutorial</a></p>
+    </div>
+</script>
+{% endjqtmpl %}
+{% endblock %}
