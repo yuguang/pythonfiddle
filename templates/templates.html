@@ -1,11 +1,9 @@
 {% extends "layout.html" %}
 
 {% block tmpl %}
-{% load jqtmpl %}
 {% load chunks %}
 
 {% include "fiddle/templates.html"%}
-{% jqtmpl %}
 
 <script id="exampleTemplate" type="text/html">
     <a href="#" data-bind="click: $parent.selectExample, text: title"></a>
@@ -39,23 +37,18 @@
     </div>
     <h3><a href="#">Featured</a></h3>
     <div>
-        {% endjqtmpl %}
-            {% chunk "featured_fiddles" %}
-        {% jqtmpl %}
+        {% chunk "featured_fiddles" %}
     </div>
     <h3><a href="#">Pages</a></h3>
     <div>
-        {% endjqtmpl %}
-            {% load flatpages %}
-            {% get_flatpages as flatpages %}
-            {% for page in flatpages %}
-                <p><a class="link" href="{{ page.url }}">{{ page.title }}</a></p>
-            {% endfor %}
-            <p><a class="link" href="{% url fiddle_snippet_list %}">All Fiddles</a></p>
-        {% jqtmpl %}
+        {% load flatpages %}
+        {% get_flatpages as flatpages %}
+        {% for page in flatpages %}
+            <p><a class="link" href="{{ page.url }}">{{ page.title }}</a></p>
+        {% endfor %}
+        <p><a class="link" href="{% url fiddle_snippet_list %}">All Fiddles</a></p>
         <p><a class="link" href="http://python.net/~goodger/projects/pycon/2007/idiomatic/handout.html">Python Idioms</a></p>
         <p><a class="link" href="http://docs.python.org/tutorial/">The Python Tutorial</a></p>
     </div>
 </script>
-{% endjqtmpl %}
 {% endblock %}

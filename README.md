@@ -15,6 +15,7 @@ Getting the Code and Running it
     cd ../pythonfiddle
     mv settings.default.py settings.py
     pip install -r requirements.txt
+    python manage.py syncdb
     python manage.py runserver
 
 Open http://127.0.0.1:8000/ in the browser.
