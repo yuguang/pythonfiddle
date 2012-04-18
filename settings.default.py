@@ -71,11 +71,11 @@ STATIC_URL = 'http://127.0.0.1:8000/static/'
 # Examples: "http://foo.com/static/admin/", "/static/admin/".
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 
-AWS_ACCESS_KEY_ID = ''
+AWS_ACCESS_KEY_ID = 's3_key'
 
-AWS_SECRET_ACCESS_KEY = ''
+AWS_SECRET_ACCESS_KEY = 's3_secret'
 
-AWS_STORAGE_BUCKET_NAME = ''
+AWS_STORAGE_BUCKET_NAME = 'bucket_name'
 
 build_config = False
 
