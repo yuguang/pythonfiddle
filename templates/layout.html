@@ -48,19 +48,6 @@
             .script(base_url+"/js/jquery-ui.python.js.gz"+_v)
             .script(base_url+"/js/knockout.js.gz"+_v).wait()
             .script(base_url+"/js/codemirror.python.js.gz"+_v)
-            .script(function() {
-                        var ver = -1; // Return value assumes failure.
-                        if (navigator.appName == "Microsoft Internet Explorer") {
-                            var ua = navigator.userAgent;
-                            var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
-                            if (re.exec(ua) != null)
-                                ver = parseFloat(RegExp.$1);
-                            if (ver < 10) {
-                                return base_url+"/js/ie-worker.js";
-                            }
-                        }
-                        return null;
-                    })
             .script(base_url+"/js/python.editor.js.gz"+_v).wait()
             .script(base_url+"/js/python.init.js.gz"+_v)
             .script("http://www.google-analytics.com/ga.js")
@@ -81,7 +68,6 @@
     {% if not DEBUG %}<link href='http://fonts.googleapis.com/css?family=Baumans' rel='stylesheet' type='text/css'>{% endif %}
     {% if DEBUG %}
         {% js "js/LAB.min.js" %}
-    	{% js "js/ie-worker.js" %}
         {% js "js/python.bootstrap.js" %}
         {% js "js/jquery-1.6.2.js" %}
         {% js "js/jquery-ui.python.js" %}
