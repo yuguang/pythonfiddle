@@ -53,6 +53,7 @@
             .script("http://www.google-analytics.com/ga.js")
             .script("https://apis.google.com/js/plusone.js")
             .script("http://platform.twitter.com/widgets.js")
+	        .script("http://dnn506yrbagrg.cloudfront.net/pages/scripts/0012/1566.js?"+Math.floor(new Date().getTime()/3600000))
             .script("http://w.sharethis.com/button/buttons.js").wait(function(){
                 stLight.options({publisher:"e166464f-d4f0-487b-b673-7abd0a910c5f"});
                 stWidget.addEntry(defaultShare);
