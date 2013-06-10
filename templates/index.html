@@ -94,6 +94,22 @@
 {% endblock %}
 
 {% block dialogs %}
+    <div id="browserDialog">
+        <div id="fallback-header">Browser Version Not Supported</div>
+        <div id="fallback-content">
+            Due to Python Fiddle's reliance on advanced JavaScript techniques, older browsers might have problems running it
+            correctly. Please download the latest version of your favourite browser.
+            <br/>
+            <a href="http://www.google.com/chrome" id="browser-chrome">Chrome 10+</a>
+            <a href="http://www.mozilla.org/firefox/" id="browser-firefox">Firefox 4+</a>
+            <a href="http://www.apple.com/safari/download/" id="browser-safari">Safari 5+</a>
+            <br/>
+            <a href="http://windows.microsoft.com/en-US/internet-explorer/downloads/ie" id="browser-ie">IE 10+</a>
+
+            <div id="fallback-ignore">Let me try anyway!</div>
+        </div>
+    </div>
+
 
     <div id="importDialog" class="container" title="Import from external resources" data-bind='jqueryui: { widget: "dialog", options: {
         minWidth: 500,
