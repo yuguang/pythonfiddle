@@ -65,6 +65,7 @@ MEDIASYNC_JOINED = {
         'js/codemirror/show-hint.js',
         'js/codemirror/python-hint.js',
         'js/codemirror/mode/python/python.js',
+        'js/codemirror/match-highlighter.js',
         'js/codemirror/dialog.js',
         'js/codemirror/searchcursor.js',
         'js/codemirror/search.js',
