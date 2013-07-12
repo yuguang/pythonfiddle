@@ -50,6 +50,7 @@
             .script(base_url+"/js/codemirror.python.js.gz"+_v)
             .script(base_url+"/js/python.editor.js.gz"+_v).wait()
             .script(base_url+"/js/python.init.js.gz"+_v)
+            .script(base_url+"/js/spellchecker.js.gz"+_v)
             .script("http://www.google-analytics.com/ga.js")
             .script("https://apis.google.com/js/plusone.js")
             .script("http://platform.twitter.com/widgets.js")
@@ -75,5 +76,6 @@
         {% js "js/codemirror.python.js" %}
         {% js "js/python.editor.js" %}
         {% js "js/python.init.js" %}
+        {% js "js/build/lib/spellchecker.js" %}
     {% endif %}
 {% endblock %}
