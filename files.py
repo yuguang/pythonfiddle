@@ -83,6 +83,8 @@ MEDIASYNC_JOINED = {
         'js/base64.js',
         'js/examples.js',
         'js/packages.python.js',
+        'js/build/lib/BJSpell.js',
+        'js/build/lib/BJSpell-en_US.js',
     ],
     'js/python.bootstrap.js': [
         FILES['BOWSER'],
