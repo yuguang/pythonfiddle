@@ -39,6 +39,7 @@ MEDIASYNC_JOINED = {
         'css/layout-default.css',
         'css/boilerplate.css',
         'css/codemirror.css',
+        'css/codemirror/util/dialog.css',
         'css/show-hint.css',
         'css/style.css',
         'css/python.css',
