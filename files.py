@@ -88,6 +88,7 @@ MEDIASYNC_JOINED = {
     'js/python.bootstrap.js': [
         FILES['BOWSER'],
         FILES['UNDERSCORE'],
+        'js/build/lib/sugar.min.js',
         'js/classy.js',
         'js/json.js',
         'js/store.js',
