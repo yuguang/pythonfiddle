@@ -18,6 +18,7 @@ Getting the Code and Running it
     python manage.py syncdb
     python manage.py runserver
 
+Read and follow the [Fiddle Salad documentation](https://github.com/yuguang/fiddlesalad#compiling-coffeescript) on compiling CoffeeScript.
 Open http://127.0.0.1:8000/ in the browser.
 
 Requirements
