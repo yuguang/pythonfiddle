@@ -6,6 +6,7 @@ urlpatterns = shared_urls + patterns('cloud_ide.fiddle.views',
     url(r'^$', 'create', name='create_snippet'),
     url(r'^save/$', 'save', name='save_snippet'),
     url(r'^check_title/', 'check_title'),
+    url(r'^tag_hint/$', 'tag_hint'),
     url(r'^(?P<snippet_slug>[-\w]+)/$', 'open', name='open_snippet'),
     url(r'^(?P<snippet_slug>[-\w]+)/embedded/$', 'open', {'embedded': True}),
 )
