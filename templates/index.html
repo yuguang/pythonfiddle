@@ -1,5 +1,6 @@
 {% extends "templates.html" %}
 {% load chunks %}
+{% load i18n %}
 
 {% block json %}
     var view_model = {{ view_model|safe }};
@@ -16,7 +17,7 @@
                 },
                 disabled: busy()
                 } }, click: function() { engine.execute() }'>
-                    Run
+                    {% trans "Run" %}
                 </button>
                 <button data-bind='jqueryui: { widget: "button", options: {
                 icons: {
@@ -24,7 +25,7 @@
                 },
                 disabled: busy()
             } }, click: function() { engine.reset() }'>
-                    Reset
+                    {% trans "Reset" %}
                 </button>
             </div>
             <div class="container" data-bind='jqueryui: "buttonset"'>
@@ -33,7 +34,7 @@
                     primary: "ui-icon-triangle-1-s"
                 }
             } }, click: function() { $("#shareMenu").toggle("blind") }'>
-                    Share
+                    {% trans "Share" %}
                 </button>
                 <button data-bind='jqueryui: { widget: "button", options: {
                 icons: {
@@ -41,18 +42,18 @@
                 },
                 disabled: !newFiddle()
             } }, click: function() { $("#importDialog").dialog("open") }'>
-                    Import
+                    {% trans "Import" %}
                 </button>
 
                 <div id="shareMenu" class="ui-widget-content ui-corner-all">
                     <span id="share_this"></span>
                     <div class="marginTop" style="display:block"></div>
                     <div>
-                        <span>Link</span>
+                        <span>{% trans "Link" %}</span>
                         <span id="copyButton" class="right ui-icon ui-icon-clipboard"></span>
                     </div>
                     <input data-bind="value: snippetUrl" />
-                    <span>Embed</span>
+                    <span>{% trans "Embed" %}</span>
                     <input data-bind="value: embedUrl, disable: newFiddle"/>
                 </div>
 
@@ -61,7 +62,7 @@
             icons: {
                 primary: authenticated() ? "ui-icon-unlocked" : "ui-icon-locked"
             },
-            label: authenticated() ? "Dashboard" : "Login"
+            label: authenticated() ? "{% trans "Dashboard" %}" : "{% trans "Login" %}"
         } }, click: function() { authenticated() ? window.open("/dashboard/") : popup("/login/") }'>
             </button>
         </div>
@@ -122,11 +123,11 @@
             primary: "ui-icon-triangle-1-e"
         }
     } }, click: function() { viewModel.importExternal() }'>
-            Go
+            {% trans "Go" %}
         </button>
         <div class="bottom" data-bind='jqueryui: "buttonset"'>
-            <input type="radio" name="importOption" id="pythonsnippet" value="pythonsnippet" checked="checked" data-bind="checked: importOption" /><label for="pythonsnippet">Python Snippet</label>
-            <input type="radio" name="importOption" id="stackoverflow" value="stackoverflow" data-bind="checked: importOption" /><label for="stackoverflow">Stackoverflow Question</label>
+            <input type="radio" name="importOption" id="pythonsnippet" value="pythonsnippet" checked="checked" data-bind="checked: importOption" /><label for="pythonsnippet">Python {% trans "Snippet" %}</label>
+            <input type="radio" name="importOption" id="stackoverflow" value="stackoverflow" data-bind="checked: importOption" /><label for="stackoverflow">Stackoverflow {% trans "Question" %}</label>
         </div>
     </div>
 
