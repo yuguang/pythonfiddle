@@ -55,7 +55,7 @@
             .script("https://apis.google.com/js/plusone.js")
             .script("http://platform.twitter.com/widgets.js")
             .script("http://w.sharethis.com/button/buttons.js").wait(function(){
-                stLight.options({publisher:"e166464f-d4f0-487b-b673-7abd0a910c5f"});
+                stLight.options({publisher:"e166464f-d4f0-487b-b673-7abd0a910c5f",doNotHash:true});
                 stWidget.addEntry(defaultShare);
             });
         }
