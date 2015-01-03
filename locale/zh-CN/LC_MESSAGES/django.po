@@ -6937,7 +6937,7 @@ msgstr "分享"
 
 #: templates/index.html:45
 msgid "Import"
-msgstr ""
+msgstr "导入"
 
 #: templates/index.html:52
 msgid "Link"
@@ -6945,7 +6945,7 @@ msgstr "链接"
 
 #: templates/index.html:56
 msgid "Embed"
-msgstr "镶嵌"
+msgstr "嵌入"
 
 #: templates/index.html:65
 msgid "Dashboard"
@@ -6957,7 +6957,7 @@ msgstr "登录"
 
 #: templates/index.html:129
 msgid "Snippet"
-msgstr ""
+msgstr "代码片段"
 
 #: templates/index.html:130
 msgid "Question"
@@ -6969,7 +6969,7 @@ msgstr "示例"
 
 #: templates/templates.html:22
 msgid "Packages"
-msgstr "包果"
+msgstr "包裹"
 
 #: templates/templates.html:26
 msgid "Hotkeys"
@@ -6985,7 +6985,7 @@ msgstr "重置"
 
 #: templates/templates.html:30
 msgid "import"
-msgstr ""
+msgstr "导入"
 
 #: templates/templates.html:31
 msgid "find"
@@ -7001,19 +7001,19 @@ msgstr "查找上一个"
 
 #: templates/templates.html:34
 msgid "replace"
-msgstr "更换"
+msgstr "替换"
 
 #: templates/templates.html:35
 msgid "replaceAll"
-msgstr ""
+msgstr "替换全部"
 
 #: templates/templates.html:38
 msgid "Featured"
-msgstr ""
+msgstr "推荐"
 
 #: templates/templates.html:42
 msgid "Pages"
-msgstr ""
+msgstr "页面"
 
 #: templates/templates.html:49
 msgid "All Fiddles"
