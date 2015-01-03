@@ -6969,7 +6969,7 @@ msgstr "示例"
 
 #: templates/templates.html:22
 msgid "Packages"
-msgstr "包裹"
+msgstr "包"
 
 #: templates/templates.html:26
 msgid "Hotkeys"
