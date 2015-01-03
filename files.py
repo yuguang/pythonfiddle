@@ -72,6 +72,7 @@ MEDIASYNC_JOINED = {
         'js/codemirror/search.js',
     ],
     'js/python.editor.js': [
+        'js/jquery-ui.tag-complete.js',
         'js/jquery.csrf.js',
         'js/jquery.history.js',
         'js/compiled-coffee/model.js',
