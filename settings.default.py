@@ -35,6 +35,11 @@ TIME_ZONE = 'America/Chicago'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
 
+LANGUAGES = (
+    ('en', 'English'),
+    ('zh-cn', 'Chinese'),
+)
+
 SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
@@ -132,6 +137,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -145,6 +151,10 @@ TEMPLATE_DIRS = (
     os.path.join(os.path.dirname(PROJECT_DIR), "templates"),
     os.path.join(PROJECT_DIR, "templates"),
     )
+
+LOCALE_PATHS = (
+    os.path.join(PROJECT_DIR, "locale"),
+)
 
 INSTALLED_APPS = (
     'django.contrib.auth',

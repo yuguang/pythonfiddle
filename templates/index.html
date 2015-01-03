@@ -68,6 +68,22 @@
         </div>
 
         <h2 class="title" data-bind="text:title"></h2>
+    <ul>
+        <li>
+            <form name="setLangEnglish" action="/i18n/setlang/" method="POST">{% csrf_token %}
+                <input name="next" type="hidden" value="/" />
+                <input type="hidden" name="language" value="en" />
+                <a href="#" onclick="document.setLangEnglish.submit();return false;">English</a>
+            </form>
+        </li>
+        <li>
+            <form name="setLangChinese" action="/i18n/setlang/" method="POST">{% csrf_token %}
+                <input name="next" type="hidden" value="/" />
+                <input type="hidden" name="language" value="zh-cn" />
+                <a href="#" onclick="document.setLangChinese.submit();return false;">Dutch</a>
+            </form>
+        </li>
+    </ul>
     </div>
 
     <div id="logo" class="right section">
