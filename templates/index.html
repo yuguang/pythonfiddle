@@ -67,7 +67,7 @@
             </button>
             <div id="languages">
                 <ul>
-                    <li><a href="#">{% trans LANGUAGE_CODE %}</a>
+                    <li><a href="#">{% trans "Language" %}&#9660;</a>
                     <ul>
                         <li>
                             <form name="setLangEnglish" action="/i18n/setlang/" method="POST">{% csrf_token %}
@@ -81,7 +81,7 @@
                                 <input name="next" type="hidden" value="/"/>
                                 <input type="hidden" name="language" value="zh"/>
                                 <a href="#"
-                                   onclick="document.setLangChinese.submit();return false;">简体中文</a>
+                                   onclick="document.setLangChinese.submit();return false;">中文</a>
                             </form>
                         </li>
                     </ul>

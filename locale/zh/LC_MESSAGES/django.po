@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-05 11:36-0500\n"
+"POT-Creation-Date: 2015-01-05 12:51-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -48,15 +48,19 @@ msgstr "仪表盘"
 msgid "Login"
 msgstr "登录"
 
-#: .\templates\index.html.py:150
+#: .\templates\index.html.py:70
+msgid "Language"
+msgstr "语言"
+
+#: .\templates\index.html.py:149
 msgid "Go"
 msgstr ""
 
-#: .\templates\index.html.py:153
+#: .\templates\index.html.py:152
 msgid "Snippet"
 msgstr "代码片段"
 
-#: .\templates\index.html.py:154
+#: .\templates\index.html.py:153
 msgid "Question"
 msgstr "问题"
 
