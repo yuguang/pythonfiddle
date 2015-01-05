@@ -37,7 +37,7 @@ LANGUAGE_CODE = 'en-us'
 
 LANGUAGES = (
     ('en', 'English'),
-    ('zh-cn', 'Chinese'),
+    ('zh', 'Chinese'),
 )
 
 SITE_ID = 1
