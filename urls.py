@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls.defaults import patterns, include, url
 from pythonfiddle.settings import DEBUG, PYTHON_LIB_DIR
 from cloud_ide.shared.urls import urlpatterns as shared_urls
 
