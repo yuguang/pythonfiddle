@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION=1.9.1
-VIRTUALENV="virtualenv-${VERSION}.tar.gz"
+# Using python3 built-in venv module (no external virtualenv needed)
 
 read -r -d '' HELP <<EOF
 Usage: setup-virtualenv.sh [options]
@@ -61,14 +60,7 @@ if [ -z "$ONLYDEPS" ]; then
 
     echo "Installing virtualenv in $(pwd)"
 
-    curl -O https://pypi.python.org/packages/source/v/virtualenv/"$VIRTUALENV"
-    tar xavf "$VIRTUALENV"
-    pushd "${VIRTUALENV%%.tar.gz}" > /dev/null
-    python2 virtualenv.py --no-site-packages ../dev-python
-    popd > /dev/null
-
-    rm -r "${VIRTUALENV%%.tar.gz}"
-    rm "${VIRTUALENV}"
+    python3 -m venv dev-python
 
 fi
 

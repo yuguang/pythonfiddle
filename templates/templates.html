@@ -46,7 +46,7 @@
         {% for page in flatpages %}
             <p><a class="link" href="{{ page.url }}">{{ page.title }}</a></p>
         {% endfor %}
-        <p><a class="link" href="{% url fiddle_snippet_list %}">{% trans "All Fiddles" %}</a></p>
+        <p><a class="link" href="{% url 'fiddle_snippet_list' %}">{% trans "All Fiddles" %}</a></p>
         <p><a class="link" href="http://python.net/~goodger/projects/pycon/2007/idiomatic/handout.html">Python Idioms</a></p>
         <p><a class="link" href="http://docs.python.org/tutorial/">The Python Tutorial</a></p>
     </div>

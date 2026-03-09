@@ -1,10 +1,11 @@
 import sys
 
-command = sys.argv[1]
-if command == 'syncmedia':
-    build_config = True
-else:
-    build_config = False
+try:
+    command = sys.argv[1] if len(sys.argv) > 1 else ''
+except (IndexError, AttributeError):
+    command = ''
+
+build_config = (command == 'syncmedia')
 
 if not build_config:
     FILES = {
