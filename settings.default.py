@@ -1,26 +1,26 @@
 # Django settings for pythonfiddle project.
 import os
+from pathlib import Path
+
 PROJECT_DIR = os.path.dirname(__file__)
+BASE_DIR = Path(__file__).resolve().parent
 
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
 
-ADMINS = (
+ADMINS = [
     # ('Your Name', 'your_email@example.com'),
-)
+]
 
 MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'fiddle',                      # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'fiddle.sqlite3',
     }
 }
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -63,18 +63,13 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = os.path.join(os.path.dirname(PROJECT_DIR), "fiddlesalad\\static")
+STATIC_ROOT = os.path.join(os.path.dirname(PROJECT_DIR), "fiddlesalad", "static")
 
-PYTHON_LIB_DIR = os.path.join(PROJECT_DIR, "static\\lib")
+PYTHON_LIB_DIR = os.path.join(PROJECT_DIR, "static", "lib")
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = 'http://127.0.0.1:8000/static/'
-
-# URL prefix for admin static files -- CSS, JavaScript and images.
-# Make sure to use a trailing slash.
-# Examples: "http://foo.com/static/admin/", "/static/admin/".
-ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 AWS_ACCESS_KEY_ID = 's3_key'
 
@@ -82,19 +77,19 @@ AWS_SECRET_ACCESS_KEY = 's3_secret'
 
 AWS_STORAGE_BUCKET_NAME = 'bucket_name'
 
+# django-storages S3 configuration (replaces django-mediasync)
+STORAGES = {
+    'staticfiles': {
+        'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage',
+    },
+}
+AWS_S3_ACCESS_KEY_ID = AWS_ACCESS_KEY_ID
+AWS_S3_SECRET_ACCESS_KEY = AWS_SECRET_ACCESS_KEY
+AWS_STORAGE_BUCKET_NAME = AWS_STORAGE_BUCKET_NAME
+
 build_config = False
 
-from files import *
-# Media files
-MEDIASYNC = {
-    'BACKEND': 'mediasync.backends.s3',
-    'AWS_KEY': AWS_ACCESS_KEY_ID,
-    'AWS_SECRET': AWS_SECRET_ACCESS_KEY,
-    'AWS_BUCKET': AWS_STORAGE_BUCKET_NAME,
-    'JOINED': MEDIASYNC_JOINED,
-}
-
-MEDIASYNC['SERVE_REMOTE'] = False
+from pythonfiddle.files import *
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -108,33 +103,37 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'o#&0=io58r!=dhaf(gx@a5$n#2zy!b$k=yhu&^@uq^7=$v%&k('
 
-# List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            os.path.join(os.path.dirname(PROJECT_DIR), 'templates'),
+            os.path.join(PROJECT_DIR, 'templates'),
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.contrib.messages.context_processors.messages',
+                'cloud_ide.context_processors.debug',
+                'cloud_ide.context_processors.media',
+                'pythonfiddle.context_processors.site',
+            ],
+        },
+    },
+]
 
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.contrib.auth.context_processors.auth',
-    'django.core.context_processors.debug',
-    'django.core.context_processors.i18n',
-    'django.core.context_processors.media',
-    'django.core.context_processors.static',
-    'django.contrib.messages.context_processors.messages',
-    'django.core.context_processors.request',
-    'cloud_ide.context_processors.debug',
-    'cloud_ide.context_processors.media',
-    'pythonfiddle.context_processors.site',
-)
-
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
@@ -142,21 +141,16 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
-    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware'
-)
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
+]
 
 ROOT_URLCONF = 'pythonfiddle.urls'
-
-TEMPLATE_DIRS = (
-    os.path.join(os.path.dirname(PROJECT_DIR), "templates"),
-    os.path.join(PROJECT_DIR, "templates"),
-    )
 
 LOCALE_PATHS = (
     os.path.join(PROJECT_DIR, "locale"),
 )
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -167,44 +161,32 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.redirects',
-    'mediasync',
+    'storages',
     'taggit',
-    'social_auth',
-    'chunks',
+    'social_django',
     'cloud_ide.fiddle',
-    # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
-)
+]
 
-AUTHENTICATION_BACKENDS = (
-    'social_auth.backends.twitter.TwitterBackend',
-    'social_auth.backends.facebook.FacebookBackend',
-    'social_auth.backends.google.GoogleOAuthBackend',
+AUTHENTICATION_BACKENDS = [
+    'social_core.backends.twitter.TwitterOAuth',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.google.GoogleOAuth2',
     'django.contrib.auth.backends.ModelBackend',
-)
+]
 
 LOGIN_URL          = '/login/'
 LOGIN_REDIRECT_URL = '/done/'
 
-TWITTER_CONSUMER_KEY              = '65tXXWpGJ0PfsZzN1xR7Q'
-TWITTER_CONSUMER_SECRET           = 'KZa2FPOjIByvdFqcHGTQNi01VouoTiqeAaZ8yelTh0'
-FACEBOOK_APP_ID                   = '244638052233650'
-FACEBOOK_API_SECRET               = '66c1d60fe6f777dc52c2c3eef5752fbf'
-LINKEDIN_CONSUMER_KEY             = ''
-LINKEDIN_CONSUMER_SECRET          = ''
-ORKUT_CONSUMER_KEY                = ''
-ORKUT_CONSUMER_SECRET             = ''
-GOOGLE_OAUTH2_CLIENT_KEY          = '823652973862.apps.googleusercontent.com'
-GOOGLE_OAUTH2_CLIENT_SECRET       = 'yQ4l2KebfymlugAnTgS6l2ID'
-SOCIAL_AUTH_CREATE_USERS          = True
-SOCIAL_AUTH_FORCE_RANDOM_USERNAME = False
-SOCIAL_AUTH_DEFAULT_USERNAME      = 'socialauth_user'
-SOCIAL_AUTH_COMPLETE_URL_NAME     = 'socialauth_complete'
-LOGIN_ERROR_URL                   = '/login/error/'
-#SOCIAL_AUTH_USER_MODEL            = 'app.CustomUser'
-SOCIAL_AUTH_ERROR_KEY             = 'socialauth_error'
+# python-social-auth settings (replaces django-social-auth)
+SOCIAL_AUTH_TWITTER_KEY               = '65tXXWpGJ0PfsZzN1xR7Q'
+SOCIAL_AUTH_TWITTER_SECRET            = 'KZa2FPOjIByvdFqcHGTQNi01VouoTiqeAaZ8yelTh0'
+SOCIAL_AUTH_FACEBOOK_KEY              = '244638052233650'
+SOCIAL_AUTH_FACEBOOK_SECRET           = '66c1d60fe6f777dc52c2c3eef5752fbf'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY         = '823652973862.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET      = 'yQ4l2KebfymlugAnTgS6l2ID'
+SOCIAL_AUTH_CREATE_USERS              = True
+SOCIAL_AUTH_DEFAULT_USERNAME          = 'socialauth_user'
+LOGIN_ERROR_URL                       = '/login/error/'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
