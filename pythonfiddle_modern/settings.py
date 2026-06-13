@@ -7,6 +7,7 @@ modernized for the pythonfiddle Django 5.2 migration.
 See https://docs.djangoproject.com/en/5.2/topics/settings/ for details.
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -118,13 +119,16 @@ LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-# Social auth OAuth credentials (override in local settings or environment)
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = ''
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ''
-SOCIAL_AUTH_TWITTER_KEY = ''
-SOCIAL_AUTH_TWITTER_SECRET = ''
-SOCIAL_AUTH_FACEBOOK_KEY = ''
-SOCIAL_AUTH_FACEBOOK_SECRET = ''
+# Social auth namespace — must match namespace= in urls.py
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+
+# Social auth OAuth credentials (set via environment variables)
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('GOOGLE_KEY', '')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('GOOGLE_SECRET', '')
+SOCIAL_AUTH_TWITTER_KEY = os.environ.get('TWITTER_KEY', '')
+SOCIAL_AUTH_TWITTER_SECRET = os.environ.get('TWITTER_SECRET', '')
+SOCIAL_AUTH_FACEBOOK_KEY = os.environ.get('FACEBOOK_KEY', '')
+SOCIAL_AUTH_FACEBOOK_SECRET = os.environ.get('FACEBOOK_SECRET', '')
 
 
 # Password validation
@@ -172,6 +176,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Project-level static files directory
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
 
 # Whitenoise static file storage (compressed + manifest for cache-busting)
 STORAGES = {
