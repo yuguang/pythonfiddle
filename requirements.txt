@@ -1,5 +1,16 @@
-django == 1.4.16
-django-mediasync >= 2.2.0
-django-social-auth >= 0.6.4
-django-taggit >= 0.9.3
-django-chunks >= 0.1
+# Django 5.2 LTS + modern replacements for legacy Django 1.4 packages
+# Legacy package -> replacement:
+#   django==1.4.16         -> Django>=5.2,<5.3
+#   django-mediasync       -> whitenoise (static files)
+#   django-social-auth     -> social-auth-core + social-auth-app-django
+#   django-taggit          -> django-taggit (still maintained)
+#   django-chunks          -> removed (use Django flatpages or custom snippets)
+
+Django>=5.2,<5.3
+social-auth-core
+social-auth-app-django
+django-taggit
+whitenoise
+
+# cloud_ide (local editable install -- see COMPLETION.md for setup)
+# pip install -e /Users/yuguang/Projects/django-cloud-ide
