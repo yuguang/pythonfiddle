@@ -130,6 +130,49 @@ INSTALLED_APPS = [
 
 ---
 
+---
+
+## Phase 3: Static Assets — COMPLETE
+
+**Agent:** Phase 3 Static Assets  
+**Date:** 2026-06-13
+
+### Changes Made
+
+| File | Change |
+|------|--------|
+| `pythonfiddle_modern/settings.py` | Added `STATICFILES_DIRS = [BASE_DIR / 'static']` |
+| `static/favicon.ico` | Created minimal 16×16 transparent ICO placeholder |
+
+### What Was Already in Place (from Phase 0)
+
+- `STATIC_ROOT = BASE_DIR / 'staticfiles'` ✓
+- Whitenoise `CompressedManifestStaticFilesStorage` in `STORAGES` ✓
+- `WhiteNoiseMiddleware` in `MIDDLEWARE` (after `SecurityMiddleware`) ✓
+- `whitenoise.runserver_nostatic` in `INSTALLED_APPS` ✓
+- `staticfiles/` in `.gitignore` ✓
+- No MEDIASYNC or AWS_* settings present ✓
+
+### Verification Results
+
+```
+python manage.py collectstatic --noinput
+→ 128 static files copied to staticfiles/, 384 post-processed
+
+python manage.py check
+→ System check identified no issues (0 silenced)
+```
+
+### Exit Criteria — PASSED
+
+- [x] `collectstatic` completes without errors
+- [x] `manage.py check` reports 0 issues
+- [x] `staticfiles/` excluded from version control via `.gitignore`
+- [x] No legacy mediasync/AWS settings in codebase
+- [x] Committed and pushed to `modernize/django5`
+
+---
+
 ## Open Questions / Handoff Notes
 
 1. **cloud_ide.login** app is not in INSTALLED_APPS. It still imports from the old `social_auth` package. The Auth agent (Phase 2) must either patch it to use `social_django` or replace it entirely.
