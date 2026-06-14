@@ -182,3 +182,46 @@ python manage.py check
 5. **django-chunks** was removed. If any templates reference `{% load chunks %}`, those must be updated.
 6. **Social auth credentials** are blank in settings.py. The Auth agent must wire up the OAuth keys (via env vars).
 7. **Snippet.slug** has no `unique=True` constraint — the Models agent should evaluate adding it.
+
+---
+
+## Phase 1: Models + Data
+
+**Agent:** Phase 1 Models + Data
+**Branch:** `modernize/django5` (commit `a77f3e8`)
+**Date:** 2026-06-14
+
+### What Was Done
+
+#### Scripts created
+
+| File | Purpose |
+|---|---|
+| `scripts/export_legacy_data.py` | Reads legacy SQLite DB (no Django needed), dumps Language/Snippet/taggit to JSON, decompresses gzip blobs |
+| `scripts/import_legacy_data.py` | Reads JSON export, `get_or_create` Language, `create` Snippet with author fallback, re-applies tags |
+| `scripts/README.md` | Full usage docs + roundtrip example |
+| `scripts/__init__.py` | Package marker |
+
+#### Documentation updated
+
+- `docs/modernization/DATA_MIGRATION.md` — filled in with actual commands, column-level schema mapping, roundtrip test results, and open issues.
+
+#### Bug fix: `CompressedTextField.get_db_prep_save` (Python 3)
+
+The `get_db_prep_save` method was calling `models.TextField.get_db_prep_save`, which in Python 3 applies `str()` to the compressed bytes — storing `b'\x1f\x8b...'` as TEXT instead of a binary BLOB. Fixed by returning the compressed bytes directly, bypassing TextField's string conversion. Committed to `django-cloud-ide` @ `eb5843d` and pushed to `origin/master`.
+
+### Roundtrip Test — PASSED
+
+```
+Export:  Languages: 1  Snippets: 1
+Import:  Snippets created: 1  Snippets skipped: 0
+Verify:  code='print("hello")'  tags=['python','test']  author='testuser'  ✓
+```
+
+### Open Questions / Handoff Notes
+
+1. **No legacy production DB** was available to test against real data. The roundtrip was validated on a freshly-seeded test DB.
+2. **`last_modified` not preserved** — `auto_now=True` resets timestamps on import. Use raw SQL `UPDATE` if original timestamps matter.
+3. **`Snippet.slug` uniqueness** — still no `unique=True`. Evaluate before launch to prevent URL collisions.
+4. **Placeholder user** (`legacy_import_user`) is auto-created for orphaned snippets. Reassign via Django admin after user migration.
+5. **`auth_user` / social auth not migrated** — users must re-authenticate after launch.
