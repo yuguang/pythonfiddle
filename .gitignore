@@ -29,3 +29,6 @@ local_settings.py
 .vscode/
 *.swp
 *.swo
+
+# Data migration artefacts (generated, not committed)
+legacy_export.json
