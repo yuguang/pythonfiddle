@@ -225,3 +225,97 @@ Verify:  code='print("hello")'  tags=['python','test']  author='testuser'  ✓
 3. **`Snippet.slug` uniqueness** — still no `unique=True`. Evaluate before launch to prevent URL collisions.
 4. **Placeholder user** (`legacy_import_user`) is auto-created for orphaned snippets. Reassign via Django admin after user migration.
 5. **`auth_user` / social auth not migrated** — users must re-authenticate after launch.
+
+---
+
+## Phase 2: Auth — COMPLETE
+
+**Agent:** Phase 2 Auth  
+**Branch:** `modernize/django5`  
+**Date:** 2026-06-13
+
+### What Was Done
+
+#### Settings (`pythonfiddle_modern/settings.py`)
+
+| Change | Detail |
+|--------|---------|
+| `import os` | Added at top of file |
+| `SOCIAL_AUTH_URL_NAMESPACE = 'social'` | Must match `namespace=` in `urls.py` |
+| OAuth keys via `os.environ.get()` | `GOOGLE_KEY/SECRET`, `TWITTER_KEY/SECRET`, `FACEBOOK_KEY/SECRET` |
+
+Settings already in place from Phase 0 (no changes needed):
+- `social_django` in `INSTALLED_APPS` ✓
+- `AUTHENTICATION_BACKENDS` with Google/Twitter/Facebook + ModelBackend ✓
+- `social_django.context_processors.backends` and `.login_redirect` ✓
+- `LOGIN_URL = '/login/'`, `LOGIN_REDIRECT_URL = '/'`, `LOGOUT_REDIRECT_URL = '/'` ✓
+
+#### URLs (`pythonfiddle_modern/urls.py`)
+
+- `path('social-auth/', include('social_django.urls', namespace='social'))` — all OAuth endpoints
+- `path('login/', TemplateView.as_view(template_name='login.html'), name='login')` — login page placeholder (Phase 5 will supply the real template)
+- `path('logout/', LogoutView.as_view(next_page='/'), name='logout')` — POST-only logout (Django 5 CSRF-safe)
+
+**Note:** Mounted `social_django.urls` only once. Mounting it twice under the same namespace causes `ImproperlyConfigured` in Django 5.
+
+#### cloud_ide.login status — SUPERSEDED (do not add to INSTALLED_APPS)
+
+`/Users/yuguang/Projects/django-cloud-ide/cloud_ide/login/` is legacy Django 1.4 code:
+- `models.py` imports from `social_auth.signals` and `social_auth.backends.facebook` (package removed)
+- `urls.py` uses `from django.conf.urls.defaults import patterns` (removed in Django 2)
+- `views.py` uses `render_to_response` + `RequestContext` (removed in Django 5) and `is_authenticated()` as a method call (fixed upstream in Phase 0)
+
+**Decision:** Do not add `cloud_ide.login` to `INSTALLED_APPS`. `social_django` provides all necessary OAuth login/callback/disconnect views. The `/login/` page (Phase 5) will render provider links using `{% url 'social:begin' 'google-oauth2' %}` etc.
+
+If the `CustomUser` model from `cloud_ide/login/models.py` is needed, port it as a separate `accounts` app that uses `AbstractUser` — but for now the standard `auth.User` is sufficient.
+
+### Verification
+
+```
+python manage.py check
+→ System check identified no issues (0 silenced)
+
+python manage.py migrate
+→ No migrations to apply  (social_django migrations were already applied in Phase 0)
+
+reverse('social:begin', kwargs={'backend': 'google-oauth2'})  → /social-auth/login/google-oauth2/
+reverse('social:complete', kwargs={'backend': 'google-oauth2'})  → /social-auth/complete/google-oauth2/
+reverse('social:begin', kwargs={'backend': 'twitter'})  → /social-auth/login/twitter/
+reverse('login')  → /login/
+reverse('logout')  → /logout/
+```
+
+### Exit Criteria — PASSED
+
+- [x] `social_django` in `INSTALLED_APPS`, migrations applied
+- [x] `AUTHENTICATION_BACKENDS` lists Google OAuth2, Twitter OAuth, Facebook OAuth2
+- [x] `SOCIAL_AUTH_URL_NAMESPACE = 'social'` matches URL namespace
+- [x] OAuth keys wired to environment variables
+- [x] `manage.py check` reports 0 issues
+- [x] URL reverse for all social backends works
+- [x] `cloud_ide.login` legacy status documented — superseded by `social_django`
+- [x] Committed and pushed to `modernize/django5`
+
+### Open Steps — Manual OAuth Credential Setup
+
+Before social login can be tested end-to-end, developers must:
+
+1. **Google OAuth2** — Create a project in [Google Cloud Console](https://console.cloud.google.com/), enable the People API, create OAuth 2.0 credentials, and set the authorized redirect URI to `https://<your-domain>/social-auth/complete/google-oauth2/`. Then set:
+   ```
+   export GOOGLE_KEY=<client-id>
+   export GOOGLE_SECRET=<client-secret>
+   ```
+
+2. **Twitter/X OAuth** — Create an app at [developer.twitter.com](https://developer.twitter.com/), enable "Sign in with Twitter", set callback URL to `https://<your-domain>/social-auth/complete/twitter/`. Then set:
+   ```
+   export TWITTER_KEY=<api-key>
+   export TWITTER_SECRET=<api-secret>
+   ```
+
+3. **Facebook OAuth2** — Create an app at [developers.facebook.com](https://developers.facebook.com/), add Facebook Login product, set redirect URI to `https://<your-domain>/social-auth/complete/facebook/`. Then set:
+   ```
+   export FACEBOOK_KEY=<app-id>
+   export FACEBOOK_SECRET=<app-secret>
+   ```
+
+4. For local development use `http://127.0.0.1:8001` as the domain and register it in each provider's allowed origins.
