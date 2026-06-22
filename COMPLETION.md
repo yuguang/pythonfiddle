@@ -319,3 +319,75 @@ Before social login can be tested end-to-end, developers must:
    ```
 
 4. For local development use `http://127.0.0.1:8001` as the domain and register it in each provider's allowed origins.
+
+---
+
+## Phase 4: Fiddle Engine — COMPLETION
+
+**Agent:** Phase 4 Fiddle Engine
+**Branch:** `modernize/django5`
+**Date:** 2026-06-13
+
+---
+
+### What Was Wired
+
+| URL pattern | View | Name |
+|-------------|------|------|
+| `/` | `cloud_ide.fiddle.views.create` | `fiddle:create_snippet` |
+| `/save/` | `cloud_ide.fiddle.views.save` | `fiddle:save_snippet` |
+| `/check_title/` | `cloud_ide.fiddle.views.check_title` | `fiddle:check_title` |
+| `/tag_hint/` | `cloud_ide.fiddle.views.tag_hint` | `fiddle:tag_hint` |
+| `/<slug>/` | `cloud_ide.fiddle.views.open` | `fiddle:open_snippet` |
+| `/<slug>/embedded/` | `cloud_ide.fiddle.views.open` (embedded=True) | `fiddle:open_snippet_embedded` |
+| `/i18n/setlang/` | `django.views.i18n.set_language` | `set_language` |
+
+**Key files:**
+- `cloud_ide/fiddle/urls.py` — new Django 5.x URLconf (path + re_path) in `django-cloud-ide` repo; already committed by Phase 0
+- `pythonfiddle_modern/urls.py` — fiddle include wired at root prefix; committed by Phase 2 alongside social auth
+
+---
+
+### Smoke Test Results
+
+```
+$ python manage.py check
+System check identified no issues (0 silenced).
+
+$ python manage.py shell -c "from cloud_ide.fiddle import views, models, forms; ..."
+views OK
+models OK
+forms OK
+
+$ python manage.py shell -c "Snippet CRUD + CompressedTextField roundtrip"
+Snippet created: 4 Hello World hello-world
+Snippet retrieved: Hello World
+Code (bytes): <class 'str'>
+CRUD test PASSED
+
+$ python manage.py shell -c "URL reverse + resolve for all 6 fiddle patterns + i18n"
+create_snippet: /
+save_snippet: /save/
+check_title: /check_title/
+tag_hint: /tag_hint/
+open_snippet: /hello-world/
+open_snippet_embedded: /hello-world/embedded/
+/ resolves to: create create_snippet
+/hello-world/ resolves to: open {'snippet_slug': 'hello-world'}
+/hello-world/embedded/ resolves to: open {'snippet_slug': 'hello-world', 'embedded': True}
+/i18n/setlang/ resolves to: set_language
+All URL tests PASSED
+
+$ python manage.py shell -c "tag_hint annotate query"
+tag_hint annotate (legacy related name): OK
+```
+
+---
+
+### Remaining Issues / Handoff Notes
+
+1. **Template rendering not tested** — `views.create` and `views.open` both render `index.html`. Template compatibility is Phase 5's responsibility.
+2. **`cloud_ide.login` app excluded** — still uses legacy `django-social-auth` and Django 1.4 patterns; superseded by `social_django` (Phase 2). Do not add to `INSTALLED_APPS`.
+3. **`cloud_ide.snippet` and `cloud_ide.shared` apps excluded** — contain additional views (dashboard, author pages, tag listings) using legacy patterns. Phase 5 should evaluate porting or replacing.
+4. **`CompressedTextField` returns `str`** — decompressed correctly; code field returns a Python `str` on read (gzip decompress → decode).
+5. **`tag_hint` uses legacy taggit related name** `taggit_taggeditem_items__id` — verified working with installed taggit version.
