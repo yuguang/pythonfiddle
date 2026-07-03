@@ -391,3 +391,48 @@ tag_hint annotate (legacy related name): OK
 3. **`cloud_ide.snippet` and `cloud_ide.shared` apps excluded** — contain additional views (dashboard, author pages, tag listings) using legacy patterns. Phase 5 should evaluate porting or replacing.
 4. **`CompressedTextField` returns `str`** — decompressed correctly; code field returns a Python `str` on read (gzip decompress → decode).
 5. **`tag_hint` uses legacy taggit related name** `taggit_taggeditem_items__id` — verified working with installed taggit version.
+
+## Phase 5: URLs, Templates, i18n — COMPLETE
+
+**Date:** 2026-07-03
+
+### Changes Made
+- `templates/layout.html`: removed `{% load mediasync %}`, replaced with `{% load static %}`, replaced `{% css "css/styles.python.css" %}` with proper `<link>` tag, replaced `{% media_url %}` with `{% get_static_prefix %}`
+- `templates/templates.html`: removed `chunks` from `{% load i18n chunks %}`, replaced `{% chunk "featured_fiddles" %}` with HTML comment
+- `templates/index.html`: replaced `{% load chunks mediasync %}` with `{% load static i18n %}`, removed `{% chunk "announcement" %}`, replaced `{% media_url '/images/...' %}` with `{% static '...' %}`
+- `templates/login.html`: removed `{% load mediasync %}`, added `{% load static %}`
+
+### Verification Results
+- `GET /` → HTTP 200
+- `GET /login/` → HTTP 200
+- `manage.py check` → 0 issues
+
+### Exit Criteria — PASSED ✅
+- All major pages render without template errors
+- Language switcher forms present in toolbar
+- No dead template tags remain
+
+---
+
+## Phase 6: Validation & Cutover — COMPLETE
+
+**Date:** 2026-07-03
+
+### Automated Smoke Tests — ALL PASSED ✅
+
+| Check | Result |
+|-------|--------|
+| `manage.py check` | 0 issues |
+| `manage.py migrate` | No migrations to apply |
+| `GET /` | HTTP 200 |
+| `GET /login/` | HTTP 200 |
+| URL reversal — 8 patterns | All PASSED |
+| Snippet CRUD + CompressedTextField | PASSED |
+| Tags (django-taggit) | PASSED |
+| i18n — en + zh | PASSED |
+| `collectstatic` | 0 errors, 192 files |
+
+### Artifacts
+- `docs/modernization/VALIDATION_CHECKLIST.md` — full checklist + cutover runbook
+
+### Exit Criteria — PASSED ✅
