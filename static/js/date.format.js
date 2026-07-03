@@ -1,0 +1,1 @@
+/* date.format.js stub */

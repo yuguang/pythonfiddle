@@ -1,0 +1,1 @@
+/* xd-yql.js stub */

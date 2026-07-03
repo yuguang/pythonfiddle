@@ -1,0 +1,1 @@
+/* store.js stub */

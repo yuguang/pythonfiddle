@@ -1,13 +1,12 @@
 {% extends "templates.html" %}
-{% load chunks %}
-{% load i18n %}
+{% load static i18n %}
 
 {% block json %}
     var view_model = {{ view_model|safe }};
 {% endblock %}
 
 {% block toolbar %}
-    <div id="announcements"><span></span> {% chunk "announcement" %}</div>
+    <div id="announcements"><span></span></div>
     <div class="left section">
         <div class="toolbar">
             <div data-bind='jqueryui: "buttonset"'>
@@ -95,7 +94,7 @@
 
     <div id="logo" class="right section">
         {% if not embedded %}
-            <img alt="Python Cloud" src="{% media_url '/images/Python_Fiddler.png' %}"/>
+            <img alt="Python Cloud" src="{% static 'images/Python_Fiddler.png' %}"/>
             <h1>Python Fiddle</h1>
             <h3>Python Cloud IDE</h3>
         {% endif %}

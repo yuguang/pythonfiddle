@@ -2,9 +2,8 @@
 {% load i18n %}
 
 {% block tmpl %}
-{% load chunks %}
 
-{% include "fiddle/templates.html"%}
+{% include "fiddle/templates.html" %}
 
 <script id="exampleTemplate" type="text/html">
     <a href="#" data-bind="click: $parent.selectExample, text: title"></a>
@@ -33,11 +32,10 @@
         <span class="kbd">Shift</span>+<span class="kbd">Ctrl</span>+<span class="kbd">G</span><span>{% trans "findPrev" %}</span>
         <span class="kbd">Shift</span>+<span class="kbd">Ctrl</span>+<span class="kbd">F</span><span>{% trans "replace" %}</span>
         <span class="kbd">Shift</span>+<span class="kbd">Ctrl</span>+<span class="kbd">R</span><span>{% trans "replaceAll" %}</span>
-
     </div>
     <h3><a href="#">{% trans "Featured" %}</a></h3>
     <div>
-        {% chunk "featured_fiddles" %}
+        <!-- featured fiddles placeholder -->
     </div>
     <h3><a href="#">{% trans "Pages" %}</a></h3>
     <div>
@@ -46,7 +44,7 @@
         {% for page in flatpages %}
             <p><a class="link" href="{{ page.url }}">{{ page.title }}</a></p>
         {% endfor %}
-        <p><a class="link" href="{% url fiddle_snippet_list %}">{% trans "All Fiddles" %}</a></p>
+        <p><a class="link" href="{% url 'fiddle:create_snippet' %}">{% trans "All Fiddles" %}</a></p>
         <p><a class="link" href="http://python.net/~goodger/projects/pycon/2007/idiomatic/handout.html">Python Idioms</a></p>
         <p><a class="link" href="http://docs.python.org/tutorial/">The Python Tutorial</a></p>
     </div>

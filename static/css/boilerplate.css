@@ -1,0 +1,4 @@
+/* HTML5 Boilerplate (stub) */
+*, *::before, *::after { box-sizing: border-box; }
+html { font-size: 100%; -webkit-text-size-adjust: 100%; }
+body { margin: 0; font-size: 13px; line-height: 1.231; }

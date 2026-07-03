@@ -1,0 +1,15 @@
+{% load static %}<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="description" content="{% block description %}{% endblock %}" />
+    <meta name="keywords" content="{% block keywords %}{% endblock %}"/>
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}" />
+    {% block styles %}{% endblock %}
+</head>
+<body {% block body_tag %}{% endblock %}>
+{% block content %}{% endblock %}
+{% block resources %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,23 @@
+No existing DB found.
+
+The legacy project at /Users/yuguang/Projects/pythonfiddle does not contain a
+SQLite database file. The settings.default.py references a DB named 'fiddle'
+(no path prefix, meaning it would be looked up in the current working directory),
+but no such file exists in the legacy project directory.
+
+To generate this file if a DB becomes available:
+  cd /Users/yuguang/Projects/pythonfiddle
+  python manage.py inspectdb > docs/modernization/old_inspectdb.txt
+
+The expected tables based on INSTALLED_APPS in settings.default.py:
+  - auth_user, auth_group, auth_permission (Django auth)
+  - django_content_type
+  - django_session
+  - django_site
+  - django_flatpages
+  - django_redirect
+  - social_auth_usersocialauth, social_auth_nonce, social_auth_association
+  - taggit_tag, taggit_taggeditem
+  - fiddle_language, fiddle_snippet
+  - chunks_chunk (from django-chunks)
+  - django_admin_log

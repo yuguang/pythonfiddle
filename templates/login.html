@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Login | Python Fiddle{% endblock %}
+
+{% block content %}
+<div style="max-width:400px; margin:60px auto; text-align:center; font-family:sans-serif;">
+  <h1>Python Fiddle</h1>
+  <p>Log in with a social account:</p>
+  <ul style="list-style:none; padding:0;">
+    <li style="margin:10px 0;">
+      <a href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a>
+    </li>
+    <li style="margin:10px 0;">
+      <a href="{% url 'social:begin' 'twitter' %}">Login with Twitter</a>
+    </li>
+    <li style="margin:10px 0;">
+      <a href="{% url 'social:begin' 'facebook' %}">Login with Facebook</a>
+    </li>
+  </ul>
+</div>
+{% endblock %}
