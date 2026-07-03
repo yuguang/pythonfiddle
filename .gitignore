@@ -32,3 +32,7 @@ local_settings.py
 
 # Data migration artefacts (generated, not committed)
 legacy_export.json
+.venv-local/
+.venv310/
+run_setup.applescript
+run_setup.command

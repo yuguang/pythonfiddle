@@ -1,0 +1,1 @@
+/* jquery.history.js stub */

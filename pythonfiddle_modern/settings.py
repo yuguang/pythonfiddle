@@ -13,8 +13,16 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Path to the shared cloud-ide-templates repository
-CLOUD_IDE_TEMPLATES_DIR = Path('/Users/yuguang/Projects/cloud-ide-templates')
+# Path to the shared cloud-ide-templates repository.
+# Override via env var for environments where the Mac path isn't available
+# (e.g. a Linux sandbox).  Falls back to a sibling directory of this repo.
+_default_templates = Path(
+    os.environ.get(
+        'CLOUD_IDE_TEMPLATES_DIR',
+        Path('/Users/yuguang/Projects/cloud-ide-templates'),
+    )
+)
+CLOUD_IDE_TEMPLATES_DIR = _default_templates
 
 
 # Quick-start development settings - unsuitable for production
@@ -43,11 +51,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.sitemaps',
+    'django.contrib.flatpages',
     # Third-party
     'social_django',
     'taggit',
     # pythonfiddle / cloud_ide apps
     'cloud_ide.fiddle',
+    # Project-level app (provides chunks/mediasync template tag stubs)
+    'pythonfiddle_modern',
 ]
 
 MIDDLEWARE = [
@@ -69,10 +80,10 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
+            # Local project templates (overrides come first)
+            BASE_DIR / 'templates',
             # Shared cloud-ide templates (fiddlesalad / pythonfiddle common templates)
             CLOUD_IDE_TEMPLATES_DIR,
-            # Local project templates (overrides)
-            BASE_DIR / 'templates',
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -98,7 +109,9 @@ WSGI_APPLICATION = 'pythonfiddle_modern.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        # Allow overriding DB path via env var (useful when the repo-root db.sqlite3
+        # is read-only, e.g. in a sandbox/VM with a mounted filesystem).
+        'NAME': Path(os.environ.get('DJANGO_DB_PATH', BASE_DIR / 'db.sqlite3')),
     }
 }
 
@@ -182,13 +195,17 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
-# Whitenoise static file storage (compressed + manifest for cache-busting)
+# Whitenoise static file storage.
+# CompressedStaticFilesStorage: serves gzip/brotli-compressed files without
+# a manifest, so collectstatic doesn't reject CSS with relative image URLs.
+# Switch to CompressedManifestStaticFilesStorage in production once all
+# referenced assets are present.
 STORAGES = {
     'default': {
         'BACKEND': 'django.core.files.storage.FileSystemStorage',
     },
     'staticfiles': {
-        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
+        'BACKEND': 'whitenoise.storage.CompressedStaticFilesStorage',
     },
 }
 

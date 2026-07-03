@@ -1,0 +1,1 @@
+/* ZeroClipboard.js stub */

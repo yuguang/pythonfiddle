@@ -1,0 +1,4 @@
+/* jQuery Layout default styles (stub) */
+.ui-layout-pane { position: absolute; z-index: 0; overflow: auto; }
+.ui-layout-resizer { position: absolute; z-index: 1; font-size: 1px; }
+.ui-layout-toggler { position: absolute; z-index: 2; }

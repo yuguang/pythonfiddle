@@ -1,0 +1,1 @@
+/* setupClipboard.js stub */
